@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="/plantillas/plantillaComun.xhtml">
+
+            <ui:define name="menu">
+                <ui:include src="/plantillas/menuComun.xhtml"/>
+            </ui:define>
+
+            <ui:define name="contenido">
+
+                <b:column medium-screen="8">
+                    <p:outputLabel value="Paciente: #{atencionPacienteControlador.citaActual.paciente.nombre} #{atencionPacienteControlador.citaActual.paciente.apellidos}"/>
+                    <p></p>
+
+                    <b:panel title="Confeccionar prescripción" look="primary" collapsible="false" rendered="#{prescripcionControlador.prescripcionActual != null}">  
+                        <h:form>
+                            <p:outputLabel value="Buscar medicamento: " for="medicamento" />
+                            <p:panelGrid id="medicamento" columns="2"  class="custom-grid" > 
+                                <p:outputLabel value="Nombre: " />
+                                <p:inputText value="#{prescripcionControlador.nombre_med}" />
+                                <p:outputLabel value="Fabricante: " />
+                                <p:inputText value="#{prescripcionControlador.fabricante_med}" />                                    
+                                <p:outputLabel value="Familia: " />
+                                <p:inputText value="#{prescripcionControlador.familia_med}" />
+                            </p:panelGrid>
+                            <p></p>
+                            <p></p>
+                            <b:commandButton value="Confirmar parámetros"  icon-spin="true" iconAwesome="thumbs-down" look="success" action="#{prescripcionControlador.doBuscarMedicamentos()}"/>      
+                        </h:form>
+                        <p></p>
+                        <p></p>
+                        <button id="btrigger" icon="ok" class="btn btn-primary " data-target="#amodal" data-toggle="modal">Buscar medicamentos</button>
+                        <b:modal id="amodal" title="Seleccionar Medicamento" styleClass="modalPseudoClass">
+                            <h:form>
+                                <b:selectOneMenu label="Seleccionar opción:" 
+                                                 value="#{prescripcionControlador.medicamento}">
+                                    <f:selectItems value="#{prescripcionControlador.medicamentos}" f:selectItemsvar="c" itemValue="#{c}" itemLabel="#{c.nombre}"/>
+                                </b:selectOneMenu> 
+                                <p></p>
+                                <p></p>
+                                <b:commandButton  class=" btn btn-primary "  value="Seleccionar" look="success" 
+                                                  action="#{prescripcionControlador.doElegirMedicamento()}" />
+                            </h:form>
+                        </b:modal>
+
+                        <p></p>
+                        <p></p>
+                        <b:form inline="true">
+                            <p:outputLabel value="Crear prescripcion:"></p:outputLabel>
+                            <p:panelGrid id="prescripcion" columns="2"  class="custom-grid" >
+
+
+                                <p:outputLabel value="Dosis "/>
+                                    <p:inputNumber value="#{prescripcionControlador.prescripcionActual.dosis}"/>
+                                
+                                <p:outputLabel value="Fecha Fin "/>
+                                    <p:calendar pages="3" value="#{prescripcionControlador.prescripcionActual.fechaFin}" />
+                                 
+                                <p:outputLabel value="Indicaciones "/>
+                                <p:inputTextarea cols="60" value="#{prescripcionControlador.prescripcionActual.indicaciones}"></p:inputTextarea>
+                        
+                                <p:outputLabel value="Medicamento Seleccionado: "/>
+                                <p:outputLabel value=" #{prescripcionControlador.medicamento.nombre} "/>
+
+                            </p:panelGrid>
+                            <p></p>
+                            <b:commandButton icon-spin="true" icon-size="3x" iconAwesome="thumbs-up" value="Confirmar" look="success" action="#{prescripcionControlador.crearPrescripcion(atencionPacienteControlador.citaActual.paciente, atencionPacienteControlador.citaActual.medico)}"/>      
+
+                        </b:form>
+
+                    </b:panel>
+                </b:column>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

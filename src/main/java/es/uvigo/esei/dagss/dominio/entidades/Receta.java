@@ -4,6 +4,7 @@
 package es.uvigo.esei.dagss.dominio.entidades;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -43,7 +44,7 @@ public class Receta implements Serializable {
     @ManyToOne(optional = true)
     Farmacia farmaciaDispensadora;
 
-
+    //SituacionReceta situacion;
     public Receta() {
     }
 
@@ -124,6 +125,15 @@ public class Receta implements Serializable {
         this.farmaciaDispensadora = farmaciaDispensadora;
     }
 
+    public SituacionReceta getSituacion() {
+        Date fecha = Calendar.getInstance().getTime();
+        if ((fecha.compareTo(inicioValidez) > -1)
+                && (fecha.compareTo(finValidez) < 1)) {
+            return SituacionReceta.DISPONIBLE;
+        }
+        return SituacionReceta.NO_DISPONIBLE;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -149,9 +159,4 @@ public class Receta implements Serializable {
         return true;
     }
 
-
-
-    
-
-    
 }

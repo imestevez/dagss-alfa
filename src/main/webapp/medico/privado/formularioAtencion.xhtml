@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+    <body>
+
+        <ui:composition template="/plantillas/plantillaComun.xhtml">
+
+
+            <ui:define name="tituloPagina">
+                <h2> Paciente: <b>#{atencionPacienteControlador.citaActual.paciente.nombre}, #{atencionPacienteControlador.citaActual.paciente.apellidos}</b> 
+                    
+
+                </h2>
+                
+                    <h2> Hora cita: <b>
+                    <h:outputText  value="#{atencionPacienteControlador.citaActual.hora}" >
+                        <f:convertDateTime timeZone="CET" pattern="HH:mm"/>
+                    </h:outputText>
+                        </b>
+                </h2>
+                <div class="div_atencion">
+                <h:form >
+                        <b:selectOneMenu 
+                            value="#{atencionPacienteControlador.estadoCita}" 
+                            colMd="2" 
+                            labelColMd="2"
+                            
+                            >
+                            <f:selectItem itemLabel="Ausente" itemValue="AUSENTE" />
+                            <f:selectItem itemLabel="Completada" itemValue="COMPLETADA" />
+                        </b:selectOneMenu>
+                        <b:commandButton class="btn btn-primary" icon="pencil" value="Cambiar Estado"  
+                                         action="#{atencionPacienteControlador.doCambiarEstado()}" />    
+                    </h:form> 
+                </div>
+                
+            </ui:define>            
+
+            <ui:define name="menu">
+                <ui:include src="/plantillas/menuComun.xhtml"/>
+            </ui:define>
+
+            <ui:define name="contenido">
+                <b:column class="menu-medico">
+                    
+                    
+                    <div class="boton_cambiar">                        
+                    <h:form>                        
+                        <b:commandButton class="btn boton_cambiar btn-primary" icon="plus-sign" value="Crear nueva prescripción"  
+                                         action="#{prescripcionControlador.getFormularioPrescripcion()}" /> 
+                    </h:form>
+                        </div>
+
+                </b:column>
+                <h3>Lista de prescripciones para paciente</h3>
+                <b:dataTable id="lista_prescripciones" value="#{atencionPacienteControlador.
+                                                                getPrescripciones(atencionPacienteControlador.citaActual.paciente)}"                                    
+                             var="prescripcion">                            
+                    <h:column>
+                        <f:facet name="header"><h:outputLabel value="Medicamento"/></f:facet>
+                        <h:outputText  value="#{prescripcion.medicamento.nombre}" />                              
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header"><h:outputLabel value="Dosis"/></f:facet>
+                        <h:outputText value="#{prescripcion.dosis}" /> 
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header"><h:outputLabel value="Fecha Inicio"/></f:facet>
+                        <h:outputText value="#{prescripcion.fechaInicio}" >
+                            <f:convertDateTime timeZone="CET" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputLabel value="Fecha Fin"/></f:facet>
+                        <h:outputText value="#{prescripcion.fechaFin}" >
+                            <f:convertDateTime timeZone="CET" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </h:column> 
+                    <h:column>
+                        <f:facet name="header"><h:outputLabel value="Acción"/></f:facet>
+                        <h:form>
+                            <b:commandButton  class="btn boton_eliminar btn-danger" value="Eliminar" iconAwesome="fa-trash" 
+                                              action="#{prescripcionControlador.eliminar(prescripcion)}" />
+                        </h:form> 
+                    </h:column>
+                </b:dataTable>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

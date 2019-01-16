@@ -3,7 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <body>
 
@@ -12,15 +15,74 @@
             <ui:define name="tituloPagina">
                 <h2> Página principal de Farmacias </h2>
             </ui:define>            
-
+            
             <ui:define name="menu">
                 <ui:include src="/plantillas/menuComun.xhtml"/>
             </ui:define>
 
             <ui:define name="contenido">
+                <h:form id="recetasPacienteForm">
+                    <b:column offset="3" span="6">
+                        <b:panel title="Buscar recetas de paciente" look="primary" collapsible="false">
+                            <b:inputText id="ts" label="Nº Tarjeta Sanitaria:" value="#{atencionPacienteControlador.numeroTarjetaSanitaria}"/>
+                            <b:commandButton value="Buscar" id="buscar"  span="2" action="#{atencionPacienteControlador.doBuscarRecetasEnVigor()}"/>
+
+                        </b:panel>
+                    </b:column>
+                    <b:column> 
+                        <h2 id="nombrePpaciente">Paciente: #{atencionPacienteControlador.paciente.nombre} #{atencionPacienteControlador.paciente.apellidos}</h2>
+                     </b:column> 
+
+                    <b:column>                        
+                        <b:dataTable id="recetas" value="#{atencionPacienteControlador.recetas}"                                    
+                             var="receta">
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Medicamento"/></f:facet>
+                                <h:outputText  value="#{receta.prescripcion.medicamento.nombre}" />                              
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Médico"/></f:facet>
+                                <h:outputText value="#{receta.prescripcion.medico.nombre} #{receta.prescripcion.medico.apellidos}" /> 
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Inicio Validez"/></f:facet>
+                                <h:outputText id="inicioValidez" value="#{receta.inicioValidez}" >
+                                    <f:convertDateTime timeZone="CET" pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Fin Validez"/></f:facet>
+                                <h:outputText id="finValidez" value="#{receta.finValidez}" >
+                                    <f:convertDateTime timeZone="CET" pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </h:column>
+                               
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Situacion"/></f:facet>
+                                <h:outputText id="situacionReceta" value="#{receta.getSituacion().etiqueta}" />
+                            </h:column>
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Estado"/></f:facet>
+                                <h:outputText id="estadoReceta" value="#{receta.estadoReceta.etiqueta}" />
+                            </h:column>
+
+                            <h:column class="text-center">
+                                <f:facet name="header"><h:outputLabel value="Acción"/></f:facet>
+                                    <h:commandButton id="servirReceta" value="Servir" 
+                                                 action="#{atencionPacienteControlador.doServirReceta(receta,farmaciaControlador.farmaciaActual)}" />
+                            </h:column>
+                            
+                        </b:dataTable>
+                        
+                    </b:column>
+                </h:form> 
             </ui:define>
 
         </ui:composition>
-
     </body>
 </html>

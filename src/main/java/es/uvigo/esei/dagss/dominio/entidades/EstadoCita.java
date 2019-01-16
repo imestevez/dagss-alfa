@@ -3,6 +3,9 @@
  */
 package es.uvigo.esei.dagss.dominio.entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum EstadoCita {
 
     PLANIFICADA ("PLANIFICADA"), 
@@ -18,5 +21,11 @@ public enum EstadoCita {
 
     public String getEtiqueta() {
         return etiqueta;
+    }
+    public static List<EstadoCita> getEstadosToChange(){
+        List<EstadoCita> estadosCitas = new ArrayList<>();
+        estadosCitas.add(EstadoCita.AUSENTE);
+        estadosCitas.add(EstadoCita.COMPLETADA);
+        return estadosCitas;
     }
 }

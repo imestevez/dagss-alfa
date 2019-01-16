@@ -4,7 +4,10 @@ body {
     font-size: 13px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     color: #000000;  
-    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    float: inherit;
+    
 }
 
 h1 {
@@ -15,6 +18,17 @@ h1 {
     margin: 0px;
     padding: 0px;
     color: #D20005;
+}
+
+h2{
+    text-align: center;
+    
+}
+
+h3{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 a:link, a:visited {
@@ -103,4 +117,31 @@ a:link:hover, a:visited:hover  {
 	padding: 1px;
 	border-style: solid;
 	border-color: black;
+}
+
+.center_button{
+       float:none;
+text-align:center;
+}
+
+.cuadro_cambiar{
+    text-align: center;
+     margin-left: 20%
+}
+
+.boton_eliminar{
+       text-align: center;
+       background: red;
+       color: black;
+       margin-left: 30%
+}
+
+
+.boton_cambiar{
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.div_atencion{
+    margin-left: 40%;
 }

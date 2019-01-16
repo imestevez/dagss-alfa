@@ -4,21 +4,61 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
 
     <body>
 
         <ui:composition template="/plantillas/plantillaComun.xhtml">
 
             <ui:define name="tituloPagina">
-                <h2>  Pagina principal de Médicos </h2>
+                <h2>  Agenda del médico: <b>#{medicoControlador.medicoActual.nombre}, #{medicoControlador.medicoActual.apellidos}</b> </h2>
+                
             </ui:define>            
 
             <ui:define name="menu">
                 <ui:include src="/plantillas/menuComun.xhtml"/>
             </ui:define>
 
-            <ui:define name="contenido">
+            <ui:define name="contenido" >
+                <h:form id="searchForm">
+                    <b:column>                        
+                        <b:dataTable id="lista_citas" value="#{atencionPacienteControlador.getCitasMedicoHoy(medicoControlador.medicoActual)}"                                    
+                             var="cita">
+                            
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Id"/></f:facet>
+                                <h:outputText id="id-cita" value="#{cita.id}" />                          
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Hora"/></f:facet>
+                                <h:outputText id="hora-cita" value="#{cita.hora}" >
+                                    <f:convertDateTime timeZone="CET" pattern="HH:mm"/>
+                                </h:outputText>                            
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Paciente"/></f:facet>
+                                <h:outputText id="nombre-paciente" value="#{cita.paciente.nombre} #{cita.paciente.apellidos}" /> 
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header"><h:outputLabel value="Estado"/></f:facet>
+                                <h:outputText id="estadoCita"  value="#{cita.estado}" />                              
+                            </h:column>
+
+                            <h:column class="text-center">
+                                <f:facet name="header"><h:outputLabel value="Atender"/></f:facet>
+                                <h:commandButton id="atender-button" value="Atender" class="btn btn-primary"
+                                                 action="#{atencionPacienteControlador.atenderCitaMedico(cita)}" />
+                                                             
+                            </h:column>
+
+                        </b:dataTable>
+                
+                    </b:column>
+                </h:form>                          
             </ui:define>
         </ui:composition>
 
